@@ -1,0 +1,18 @@
+﻿
+// ReadAndPrint is the method name, a method parameter is always of type record, the rFileData means the instance and also the instance name
+ReadAndPrint rFileData: bool
+{
+	file = try			       => new File(rFileData.file);
+	       catch (IOException) => Error(IOException);
+
+	Log("Reading file: " + file.getName());
+
+	fileInputStream = try				  => new FileInputStream(file);
+				      catch (IOException) => Error(IOException);
+
+	while ((len = fileInputStream.read(b)) != -1)
+		System.out.println(new String(b, 0, len));
+
+	fileInputStream.close();
+	return true;
+}

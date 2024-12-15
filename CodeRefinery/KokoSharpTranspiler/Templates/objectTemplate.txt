@@ -1,0 +1,5 @@
+﻿namespace {{NAMESPACE}};
+
+public {{OBJECTTYPE}} {{OBJECTNAME}} {
+	{{BODY}}
+}

@@ -1,0 +1,21 @@
+@startuml
+set separator none
+title Marie Base Solution - System Context
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+Person(Developer, "Developer", $descr="", $tags="", $link="")
+System(MarieBaseSolution, "Marie Base Solution", $descr="", $tags="", $link="")
+System(MongoDB, "MongoDB", $descr="", $tags="", $link="")
+System(DialogSolution, "Dialog Solution", $descr="", $tags="", $link="")
+
+Rel(DialogSolution, MarieBaseSolution, "uses", $techn="", $tags="", $link="")
+Rel(MarieBaseSolution, MongoDB, "Reads from and writes to", $techn="", $tags="", $link="")
+Rel(Developer, MarieBaseSolution, "Migrates database using", $techn="", $tags="", $link="")
+Rel(Developer, DialogSolution, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

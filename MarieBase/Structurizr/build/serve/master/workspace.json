@@ -1,0 +1,392 @@
+{
+  "configuration" : { },
+  "description" : ", Sub deviced game engine project",
+  "documentation" : { },
+  "id" : 0,
+  "model" : {
+    "people" : [ {
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "Developer",
+      "properties" : {
+        "structurizr.dsl.identifier" : "developer"
+      },
+      "relationships" : [ {
+        "description" : "uses",
+        "destinationId" : "6",
+        "id" : "7",
+        "properties" : {
+          "structurizr.dsl.identifier" : "02262569-e1a8-4da5-9a47-961a1dc09443"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "uses",
+        "destinationId" : "3",
+        "id" : "8",
+        "linkedRelationshipId" : "7",
+        "sourceId" : "1"
+      }, {
+        "description" : "Migrates database using",
+        "destinationId" : "14",
+        "id" : "26",
+        "properties" : {
+          "structurizr.dsl.identifier" : "5f8432da-feb2-42fa-9d3a-fdac7a0d358e"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Migrates database using",
+        "destinationId" : "13",
+        "id" : "27",
+        "linkedRelationshipId" : "26",
+        "sourceId" : "1"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "Engine",
+      "properties" : {
+        "structurizr.dsl.identifier" : "engine"
+      },
+      "relationships" : [ {
+        "description" : "uses",
+        "destinationId" : "4",
+        "id" : "9",
+        "properties" : {
+          "structurizr.dsl.identifier" : "0df1b8fa-f73f-4e3d-ad4a-2fa34674ca4a"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "uses",
+        "destinationId" : "3",
+        "id" : "10",
+        "linkedRelationshipId" : "9",
+        "sourceId" : "2"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Dialog library",
+        "properties" : {
+          "structurizr.dsl.identifier" : "dialoglibrary"
+        },
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Dialog Test Project",
+        "properties" : {
+          "structurizr.dsl.identifier" : "dialogtestproject"
+        },
+        "relationships" : [ {
+          "description" : "tests",
+          "destinationId" : "4",
+          "id" : "11",
+          "properties" : {
+            "structurizr.dsl.identifier" : "07ae0a95-348d-4cc7-b663-58d787ea6e97"
+          },
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "id" : "6",
+        "name" : "Dialog Configurator",
+        "properties" : {
+          "structurizr.dsl.identifier" : "dialogconfigurator"
+        },
+        "relationships" : [ {
+          "description" : "sends json to",
+          "destinationId" : "4",
+          "id" : "12",
+          "properties" : {
+            "structurizr.dsl.identifier" : "f08b0b1b-be94-4278-8a1e-cd41d85979a0"
+          },
+          "sourceId" : "6",
+          "tags" : "Relationship"
+        }, {
+          "description" : "uses",
+          "destinationId" : "16",
+          "id" : "17",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fd1edc09-fb72-498e-a03f-7cf70fcbef50"
+          },
+          "sourceId" : "6",
+          "tags" : "Relationship"
+        }, {
+          "description" : "uses",
+          "destinationId" : "13",
+          "id" : "18",
+          "linkedRelationshipId" : "17",
+          "sourceId" : "6"
+        } ],
+        "tags" : "Element,Container"
+      } ],
+      "documentation" : { },
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Dialog Solution",
+      "properties" : {
+        "structurizr.dsl.identifier" : "dialogsolution"
+      },
+      "relationships" : [ {
+        "description" : "uses",
+        "destinationId" : "16",
+        "id" : "19",
+        "linkedRelationshipId" : "17",
+        "sourceId" : "3"
+      }, {
+        "description" : "uses",
+        "destinationId" : "13",
+        "id" : "20",
+        "linkedRelationshipId" : "17",
+        "sourceId" : "3"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "containers" : [ {
+        "documentation" : { },
+        "id" : "14",
+        "name" : "Marie Base Migration Manager",
+        "properties" : {
+          "structurizr.dsl.identifier" : "mariebasemigrationmanager"
+        },
+        "relationships" : [ {
+          "description" : "Calls database from",
+          "destinationId" : "16",
+          "id" : "23",
+          "properties" : {
+            "structurizr.dsl.identifier" : "3f771323-0007-49a1-a509-ad740ecb1d38"
+          },
+          "sourceId" : "14",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "id" : "15",
+        "name" : "Marie Base Test Project",
+        "properties" : {
+          "structurizr.dsl.identifier" : "mariebasetestproject"
+        },
+        "relationships" : [ {
+          "description" : "Tests",
+          "destinationId" : "16",
+          "id" : "22",
+          "properties" : {
+            "structurizr.dsl.identifier" : "738bf2c4-82d2-4f32-819d-cfab73095ebe"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "id" : "16",
+        "name" : "Marie Base Library",
+        "properties" : {
+          "structurizr.dsl.identifier" : "mariebaselibrary"
+        },
+        "relationships" : [ {
+          "description" : "Reads from and writes to",
+          "destinationId" : "21",
+          "id" : "24",
+          "properties" : {
+            "structurizr.dsl.identifier" : "2f1e8942-892b-4578-b7e3-25cf9cc1f106"
+          },
+          "sourceId" : "16",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container"
+      } ],
+      "documentation" : { },
+      "id" : "13",
+      "location" : "Unspecified",
+      "name" : "Marie Base Solution",
+      "properties" : {
+        "structurizr.dsl.identifier" : "mariebasesolution"
+      },
+      "relationships" : [ {
+        "description" : "Reads from and writes to",
+        "destinationId" : "21",
+        "id" : "25",
+        "linkedRelationshipId" : "24",
+        "sourceId" : "13"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "documentation" : { },
+      "id" : "21",
+      "location" : "Unspecified",
+      "name" : "MongoDB",
+      "properties" : {
+        "structurizr.dsl.identifier" : "database"
+      },
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "MarieGameEngine",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlICJNYXJpZUdhbWVFbmdpbmUiICIsIFN1YiBkZXZpY2VkIGdhbWUgZW5naW5lIHByb2plY3QiIHsNCgltb2RlbCB7DQogICAgICAgIGRldmVsb3BlciA9IHBlcnNvbiAiRGV2ZWxvcGVyIg0KICAgICAgICBlbmdpbmUgPSBwZXJzb24gIkVuZ2luZSINCg0KICAgICAgICBkaWFsb2dTb2x1dGlvbiA9IHNvZnR3YXJlU3lzdGVtICJEaWFsb2cgU29sdXRpb24iIHsNCiAgICAgICAgICAgIGRpYWxvZ0xpYnJhcnkgPSBjb250YWluZXIgIkRpYWxvZyBsaWJyYXJ5Ig0KICAgICAgICAgICAgZGlhbG9nVGVzdFByb2plY3QgPSBjb250YWluZXIgIkRpYWxvZyBUZXN0IFByb2plY3QiDQogICAgICAgICAgICBkaWFsb2dDb25maWd1cmF0b3IgPSBjb250YWluZXIgIkRpYWxvZyBDb25maWd1cmF0b3IiDQogICAgICAgIH0NCg0KICAgICAgICBkZXZlbG9wZXIgLT4gZGlhbG9nQ29uZmlndXJhdG9yICJ1c2VzIg0KICAgICAgICBlbmdpbmUgLT4gZGlhbG9nTGlicmFyeSAidXNlcyINCiAgICAgICAgZGlhbG9nVGVzdFByb2plY3QgLT4gZGlhbG9nTGlicmFyeSAidGVzdHMiDQogICAgICAgIGRpYWxvZ0NvbmZpZ3VyYXRvciAtPiBkaWFsb2dMaWJyYXJ5ICJzZW5kcyBqc29uIHRvIg0KDQogICAgICAgIG1hcmllQmFzZVNvbHV0aW9uID0gc29mdHdhcmVTeXN0ZW0gIk1hcmllIEJhc2UgU29sdXRpb24iIHsNCiAgICAgICAgICAgIG1hcmllQmFzZU1pZ3JhdGlvbk1hbmFnZXIgPSBjb250YWluZXIgIk1hcmllIEJhc2UgTWlncmF0aW9uIE1hbmFnZXIiDQogICAgICAgICAgICBtYXJpZUJhc2VUZXN0UHJvamVjdCA9IGNvbnRhaW5lciAiTWFyaWUgQmFzZSBUZXN0IFByb2plY3QiDQogICAgICAgICAgICBtYXJpZUJhc2VMaWJyYXJ5ID0gY29udGFpbmVyICJNYXJpZSBCYXNlIExpYnJhcnkiDQogICAgICAgIH0NCg0KICAgICAgICBkaWFsb2dDb25maWd1cmF0b3IgLT4gbWFyaWVCYXNlTGlicmFyeSAidXNlcyINCg0KICAgICAgICBkYXRhYmFzZSA9IHNvZnR3YXJlU3lzdGVtICJNb25nb0RCIg0KDQogICAgICAgIG1hcmllQmFzZVRlc3RQcm9qZWN0IC0+IG1hcmllQmFzZUxpYnJhcnkgIlRlc3RzIg0KICAgICAgICBtYXJpZUJhc2VNaWdyYXRpb25NYW5hZ2VyIC0+IG1hcmllQmFzZUxpYnJhcnkgIkNhbGxzIGRhdGFiYXNlIGZyb20iDQogICAgICAgIG1hcmllQmFzZUxpYnJhcnkgLT4gZGF0YWJhc2UgIlJlYWRzIGZyb20gYW5kIHdyaXRlcyB0byINCiAgICAgICAgZGV2ZWxvcGVyIC0+IG1hcmllQmFzZU1pZ3JhdGlvbk1hbmFnZXIgIk1pZ3JhdGVzIGRhdGFiYXNlIHVzaW5nIg0KICAgIH0NCg0KICAgIHZpZXdzIHsNCiAgICAgICAgc3lzdGVtQ29udGV4dCBtYXJpZUJhc2VTb2x1dGlvbiAiRGlhZ3JhbTEiIHsNCiAgICAgICAgICAgIGluY2x1ZGUgKg0KICAgICAgICAgICAgYXV0b2xheW91dCBscg0KICAgICAgICB9DQoNCiAgICAgICAgY29udGFpbmVyIG1hcmllQmFzZVNvbHV0aW9uICJEaWFncmFtMiIgew0KICAgICAgICAgICAgaW5jbHVkZSAqDQogICAgICAgICAgICBhdXRvbGF5b3V0IGxyDQogICAgICAgIH0NCg0KICAgICAgICBjb250YWluZXIgZGlhbG9nU29sdXRpb24gIkRpYWdyYW0zIiB7DQogICAgICAgICAgICBpbmNsdWRlICoNCiAgICAgICAgICAgIGF1dG9sYXlvdXQgbHINCiAgICAgICAgfQ0KICAgIH0NCn0="
+  },
+  "views" : {
+    "configuration" : {
+      "branding" : { },
+      "styles" : { },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "21",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Diagram2",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "19"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "8"
+      } ],
+      "softwareSystemId" : "13"
+    }, {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Diagram3",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "11"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "7"
+      }, {
+        "id" : "9"
+      } ],
+      "softwareSystemId" : "3"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "21",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "Diagram1",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "20"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "8"
+      } ],
+      "softwareSystemId" : "13"
+    } ]
+  }
+}

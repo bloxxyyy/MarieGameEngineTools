@@ -1,0 +1,29 @@
+@startuml
+set separator none
+title Marie Base Solution - Containers
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+Person(Developer, "Developer", $descr="", $tags="", $link="")
+System(DialogSolution, "Dialog Solution", $descr="", $tags="", $link="")
+System(MongoDB, "MongoDB", $descr="", $tags="", $link="")
+
+System_Boundary("MarieBaseSolution_boundary", "Marie Base Solution", $tags="") {
+  Container(MarieBaseSolution.MarieBaseMigrationManager, "Marie Base Migration Manager", $techn="", $descr="", $tags="", $link="")
+  Container(MarieBaseSolution.MarieBaseTestProject, "Marie Base Test Project", $techn="", $descr="", $tags="", $link="")
+  Container(MarieBaseSolution.MarieBaseLibrary, "Marie Base Library", $techn="", $descr="", $tags="", $link="")
+}
+
+Rel(DialogSolution, MarieBaseSolution.MarieBaseLibrary, "uses", $techn="", $tags="", $link="")
+Rel(MarieBaseSolution.MarieBaseTestProject, MarieBaseSolution.MarieBaseLibrary, "Tests", $techn="", $tags="", $link="")
+Rel(MarieBaseSolution.MarieBaseMigrationManager, MarieBaseSolution.MarieBaseLibrary, "Calls database from", $techn="", $tags="", $link="")
+Rel(MarieBaseSolution.MarieBaseLibrary, MongoDB, "Reads from and writes to", $techn="", $tags="", $link="")
+Rel(Developer, MarieBaseSolution.MarieBaseMigrationManager, "Migrates database using", $techn="", $tags="", $link="")
+Rel(Developer, DialogSolution, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml
