@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DialogLibrary", "DialogLibr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DialogTestProject", "DialogTestProject\DialogTestProject.csproj", "{01F31293-FFE6-4896-8550-167E4DE2B8DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogTestConsoleApp", "DialogTestConsoleApp\DialogTestConsoleApp.csproj", "{C73A1791-136D-4DF2-B660-592BA238F629}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{01F31293-FFE6-4896-8550-167E4DE2B8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01F31293-FFE6-4896-8550-167E4DE2B8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01F31293-FFE6-4896-8550-167E4DE2B8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73A1791-136D-4DF2-B660-592BA238F629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73A1791-136D-4DF2-B660-592BA238F629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73A1791-136D-4DF2-B660-592BA238F629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73A1791-136D-4DF2-B660-592BA238F629}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

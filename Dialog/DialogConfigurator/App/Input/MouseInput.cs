@@ -17,17 +17,17 @@ public class MouseInput
         Position = new Point(_currentMouseState.X, _currentMouseState.Y);
     }
 
-    public bool IsMouseButtonPressed(ButtonState current, ButtonState previous)
+    public static bool IsMouseButtonPressed(ButtonState current, ButtonState previous)
     {
         return current == ButtonState.Pressed && previous == ButtonState.Released;
     }
 
-    public bool IsMouseButtonHeld(ButtonState current, ButtonState previous)
+    public static bool IsMouseButtonHeld(ButtonState current, ButtonState previous)
     {
         return current == ButtonState.Pressed && previous == ButtonState.Pressed;
     }
 
-    public bool IsMouseButtonReleased(ButtonState current, ButtonState previous)
+    public static bool IsMouseButtonReleased(ButtonState current, ButtonState previous)
     {
         return current == ButtonState.Released && previous == ButtonState.Pressed;
     }

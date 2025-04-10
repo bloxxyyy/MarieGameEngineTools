@@ -22,16 +22,17 @@ public class Setup : Game
         RenderingObjects.Graphics.PreferredBackBufferHeight = 480;
 
         RenderingObjects.Graphics.ApplyChanges();
-        Window.Position = new Point(GraphicsDevice.DisplayMode.Width / 2 - RenderingObjects.Graphics.PreferredBackBufferWidth / 2,GraphicsDevice.DisplayMode.Height / 2 - RenderingObjects.Graphics.PreferredBackBufferHeight / 2);
+        Window.Position = new Point(
+            (GraphicsDevice.DisplayMode.Width / 2) - (RenderingObjects.Graphics.PreferredBackBufferWidth / 2),
+            (GraphicsDevice.DisplayMode.Height / 2) - (RenderingObjects.Graphics.PreferredBackBufferHeight / 2));
     }
-
 
     protected override void LoadContent()
     {
         RenderingObjects.SpriteBatch = new SpriteBatch(RenderingObjects.Graphics.GraphicsDevice);
         RenderingObjects.CurrentFontSystem = new FontSystem();
-        RenderingObjects.CurrentFontSystem.AddFont(File.ReadAllBytes(@"../../../Content/AnonymousPro-Bold.ttf"));
-        RenderingObjects.CurrentFontSystem.AddFont(File.ReadAllBytes(@"../../../Content/AnonymousPro-Regular.ttf"));
+        RenderingObjects.CurrentFontSystem.AddFont(File.ReadAllBytes("../../../Content/AnonymousPro-Bold.ttf"));
+        RenderingObjects.CurrentFontSystem.AddFont(File.ReadAllBytes("../../../Content/AnonymousPro-Regular.ttf"));
 
         RenderingObjects.FontBig         = RenderingObjects.CurrentFontSystem.GetFont(30);
         RenderingObjects.WindowTitleFont = RenderingObjects.CurrentFontSystem.GetFont(21);

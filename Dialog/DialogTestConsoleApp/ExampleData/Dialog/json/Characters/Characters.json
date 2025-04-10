@@ -1,0 +1,83 @@
+{
+  "NpcData": [
+    {
+      "Id": "Yui",
+      "Name": "Yui",
+      "Trait_Ids": [
+        "Human",
+        "irritable",
+        "Competent"
+      ],
+      "Acquaintances": [
+        {
+          "Id": "Koko",
+          "Attitude": 100
+        },
+        {
+          "Id": "Marie",
+          "Attitude": 25
+        }
+      ]
+    },
+    {
+      "Id": "Koko",
+      "Name": "Koko",
+      "Trait_Ids": [
+        "Human",
+        "Genius",
+        "Nonverbal"
+      ],
+      "Acquaintances": [
+        {
+          "Id": "Yui",
+          "Attitude": 100
+        }
+      ]
+    },
+    {
+      "Id": "Marie",
+      "Name": "Marie",
+      "Trait_Ids": [
+        "Human",
+        "Shrewd",
+        "alexithymic",
+        "Competent"
+      ],
+      "Acquaintances": [
+        {
+          "Id": "Yui",
+          "Attitude": 50
+        }
+      ]
+    },
+    {
+      "Id": "Kamille",
+      "Name": "Kamille",
+      "Trait_Ids": [
+        "Human",
+        "Good_Natured",
+        "Impulsive"
+      ]
+    },
+    {
+      "Id": "Lisanne",
+      "Name": "Lisanne",
+      "Trait_Ids": [
+        "Human",
+        "Sadistic",
+        "Smart",
+        "family-oriented"
+      ]
+    },
+    {
+      "Id": "Altaira",
+      "Name": "Altaira",
+      "Trait_Ids": [
+        "Human",
+        "Good_Natured",
+        "Competent",
+        "family-oriented"
+      ]
+    }
+  ]
+}
