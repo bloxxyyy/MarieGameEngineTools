@@ -1,0 +1,234 @@
+{
+  "Initial_prompt_id": "initial_prompt",
+  "npc_prompts": [
+    {
+      "Id": "initial_prompt",
+      "Text": [ "Huh?! What do you want!" ],
+      "Player_prompt_ids": [
+        "positive_prompt",
+        "hostile_player_prompt"
+      ],
+      "Target_npc_prompt_chance_ids": [
+        "positive_chance_npc",
+        "neutral_chance_npc",
+        "kamille_chance_npc",
+        "hostile_chance_npc",
+        "sadistic_chance_npc"
+      ]
+    },
+    {
+      "Id": "questioned_redguard_prompt_yui",
+      "Text": [ "... How do you know?" ]
+    },
+    {
+      "Id": "Mediate_prompt",
+      "Text": [ "If you need the coin I know other ways.." ]
+    },
+    {
+      "Id": "positive_prompt_npc",
+      "Text": [ "I won`t let you fight alone!" ],
+      "Added_Attitude_Towards_target_interlocutor": 30,
+      "Target_npc_prompt_chance_ids": [
+        "allow_help_chance_yui",
+        "disallow_help_chance_yui"
+      ]
+    },
+    {
+      "Id": "neutral_prompt_npc",
+      "Text": [ "You seemed in need of some assistance..", "Relax, I could help!" ],
+      "Added_Attitude_Towards_target_interlocutor": 10,
+      "Target_npc_prompt_chance_ids": [
+        "allow_help_chance_yui",
+        "disallow_help_chance_yui"
+      ]
+    },
+    {
+      "Id": "protective_prompt",
+      "Text": [ "I came from the redguard here to assist!" ],
+      "Added_Attitude_Towards_target_interlocutor": 10,
+      "Target_npc_prompt_chance_ids": [
+        "red_guard_yui"
+      ]
+    },
+    {
+      "Id": "red_guard_yui_prompt",
+      "Text": [ "You came for me!" ],
+      "Added_Attitude_Towards_target_interlocutor": 5
+    },
+    {
+      "Id": "allow_help_prompt",
+      "Text": [ "What? Thanks!!" ],
+      "Added_Attitude_Towards_target_interlocutor": 25,
+      "Player_prompt_ids": [
+        "positive_prompt_two"
+      ]
+    },
+    {
+      "Id": "disallow_help_prompt",
+      "Text": [ "Ha! Like I'd accept any help from your kind!" ],
+      "Added_Attitude_Towards_target_interlocutor": -25,
+      "Possible_Actions": [
+        {
+          "Needed_Attitude_Of_Target_Interlocutor": -50,
+          "Chance": 50,
+          "Event_Id": "battle_event"
+        }
+      ]
+    },
+    {
+      "Id": "hostile_prompt",
+      "Text": [ "Try me!", "I'll cut you down!" ],
+      "Added_Attitude_Towards_target_interlocutor": -100,
+      "Target_npc_prompt_chance_ids": [
+        "scared_chance_yui",
+        "not_scared_chance_yui"
+      ]
+    },
+    {
+      "Id": "sadistic_prompt",
+      "Text": [ "Your demise.." ],
+      "Added_Attitude_Towards_target_interlocutor": -100,
+      "Target_npc_prompt_chance_ids": [
+        "scared_chance_yui",
+        "not_scared_chance_yui"
+      ]
+    },
+    {
+      "Id": "not_scared_prompt",
+      "Added_Attitude_Towards_target_interlocutor": -100,
+      "Text": [ "Like you'd win!" ],
+      "Possible_Actions": [
+        {
+          "Needed_Attitude_Of_Target_Interlocutor": -25,
+          "Chance": 100,
+          "Event_Id": "battle_event"
+        }
+      ]
+    },
+    {
+      "Id": "scared_prompt",
+      "Added_Attitude_Towards_target_interlocutor": -25,
+      "Text": [ "N-no wait please, d-don't." ],
+      "Possible_Actions": [
+        {
+          "Needed_Attitude_Of_Target_Interlocutor": -25,
+          "Chance": 50,
+          "Event_Id": "battle_event"
+        },
+        {
+          "Needed_Attitude_Of_Target_Interlocutor": 0,
+          "Chance": 50,
+          "Event_Id": "stop_interaction_event"
+        }
+      ],
+    }
+  ],
+  "Player_prompts": [
+    {
+      "Id": "positive_prompt",
+      "Text": [ "I came to help!" ],
+      "Added_Attitude_Towards_target_interlocutor": 15,
+      "Target_npc_prompt_chance_ids": [
+        "allow_help_chance_yui",
+        "disallow_help_chance_yui"
+      ]
+    },
+    {
+      "Id": "hostile_player_prompt",
+      "Added_Attitude_Towards_target_interlocutor": -100,
+      "Text": [ "I'd like some of your coin!" ],
+      "Target_npc_prompt_chance_ids": [
+        "Mediate_chance_npc",
+        "hostile_chance_npc"
+      ]
+    },
+    {
+      "Id": "positive_prompt_two",
+      "Text": [ "Ofcourse, you used to be from the redguard right?" ],
+      "Target_npc_prompt_chance_ids": [
+        "questioned_redguard_chance_yui"
+      ]
+    }
+  ],
+  "Npc_prompt_chances": [
+    {
+      "Id": "Mediate_chance_npc",
+      "Npc_prompt_id": "Mediate_prompt",
+      "Base_chance_percentage": 50
+    },
+    {
+      "Id": "questioned_redguard_chance_yui",
+      "Exclusive_to_npc": "Yui",
+      "Npc_prompt_id": "questioned_redguard_prompt_yui",
+      "Base_chance_percentage": 100
+    },
+    {
+      "Id": "allow_help_chance_yui",
+      "Exclusive_to_npc": "Yui",
+      "Npc_prompt_id": "allow_help_prompt",
+      "Base_chance_percentage": 50
+    },
+    {
+      "Id": "disallow_help_chance_yui",
+      "Exclusive_to_npc": "Yui",
+      "Npc_prompt_id": "disallow_help_prompt",
+      "Base_chance_percentage": 50,
+      "Prompt_type": "Hostile"
+    },
+    {
+      "Id": "kamille_chance_npc",
+      "Exclusive_to_npc": "Kamille",
+      "Npc_prompt_id": "protective_prompt",
+      "Base_chance_percentage": -1
+    },
+    {
+      "Id": "hostile_chance",
+      "Exclusive_to_npc": "Yui",
+      "Npc_prompt_id": "hostile_prompt",
+      "Base_chance_percentage": 50,
+      "Prompt_type": "Hostile"
+    },
+    {
+      "Id": "sadistic_chance_npc",
+      "Exclusive_to_trait": "Sadistic",
+      "Npc_prompt_id": "sadistic_prompt",
+      "Base_chance_percentage": 50,
+      "Prompt_type": "Hostile"
+    },
+    {
+      "Id": "neutral_chance_npc",
+      "Npc_prompt_id": "neutral_prompt_npc",
+      "Base_chance_percentage": 50
+    },
+    {
+      "Id": "positive_chance_npc",
+      "Exclusive_to_attitude": 20,
+      "Npc_prompt_id": "positive_prompt_npc",
+      "Base_chance_percentage": 50,
+      "Prompt_type": "Friendly"
+    },
+    {
+      "Id": "hostile_chance_npc",
+      "Npc_prompt_id": "hostile_prompt",
+      "Base_chance_percentage": 50,
+      "Prompt_type": "Hostile"
+    },
+    {
+      "Id": "scared_chance_yui",
+      "Exclusive_to_npc": "Yui",
+      "Npc_prompt_id": "scared_prompt",
+      "Base_chance_percentage": 25
+    },
+    {
+      "Id": "not_scared_chance_yui",
+      "Exclusive_to_npc": "Yui",
+      "Npc_prompt_id": "not_scared_prompt",
+      "Base_chance_percentage": 75
+    },
+    {
+      "Id": "red_guard_yui",
+      "Npc_prompt_id": "red_guard_yui_prompt",
+      "Base_chance_percentage": 100
+    }
+  ]
+}

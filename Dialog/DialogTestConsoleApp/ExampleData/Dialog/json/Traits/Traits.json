@@ -1,0 +1,94 @@
+{
+  "TraitData": [
+    {
+      "Id": "Nonverbal",
+      "Name": "Nonverbal"
+    },
+    {
+      "Id": "Impulsive",
+      "Name": "Impulsive",
+      "Dislikes": [
+        "irritable"
+      ]
+    },
+    {
+      "Id": "family-oriented",
+      "Name": "family-oriented",
+      "Likes": [
+        "Good_Natured",
+        "family-oriented"
+      ],
+      "Dislikes": [
+        "Sadistic",
+        "alexithymic"
+      ]
+    },
+    {
+      "Id": "Human",
+      "Name": "Human",
+      "Likes": [
+        "Human",
+        "Competent"
+      ]
+    },
+    {
+      "Id": "Competent",
+      "Name": "Competent",
+      "Likes": [
+        "Competent"
+      ]
+    },
+    {
+      "Id": "Genius",
+      "Name": "Genius",
+      "Likes": [
+        "Competent"
+      ]
+    },
+    {
+      "Id": "Smart",
+      "Name": "Smart"
+    },
+    {
+      "Id": "Sadistic",
+      "Name": "Sadistic",
+      "Dislikes": [
+        "Competent"
+      ]
+    },
+    {
+      "Id": "Shrewd",
+      "Name": "Shrewd",
+      "Dislikes": [
+        "Impulsive",
+        "Competent"
+      ]
+    },
+    {
+      "Id": "irritable",
+      "Name": "irritable"
+    },
+    {
+      "Id": "alexithymic",
+      "Name": "alexithymic",
+      "Likes": [
+        "Competent"
+      ],
+      "Dislikes": [
+        "Impulsive",
+        "irritable"
+      ]
+    },
+    {
+      "Id": "Good_Natured",
+      "Name": "Good_Natured",
+      "Likes": [
+        "family-oriented",
+        "Good_Natured"
+      ],
+      "Dislikes": [
+        "Sadistic"
+      ]
+    }
+  ]
+}

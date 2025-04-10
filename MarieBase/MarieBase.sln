@@ -18,10 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarieBaseTestProject", "Mar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarieBaseMigrationManager", "MarieBaseMigrationManager\MarieBaseMigrationManager.csproj", "{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlliRefactor", "AlliRefactor\AlliRefactor.csproj", "{3B2F6995-3A05-4E0D-A385-5A20B963CA69}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KokoSharpTranspiler", "KokoSharpTranspiler\KokoSharpTranspiler.csproj", "{987DA661-FEEF-4A16-BC89-62A54CD8E200}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,14 +36,6 @@ Global
 		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B2F6995-3A05-4E0D-A385-5A20B963CA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B2F6995-3A05-4E0D-A385-5A20B963CA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B2F6995-3A05-4E0D-A385-5A20B963CA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B2F6995-3A05-4E0D-A385-5A20B963CA69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{987DA661-FEEF-4A16-BC89-62A54CD8E200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{987DA661-FEEF-4A16-BC89-62A54CD8E200}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{987DA661-FEEF-4A16-BC89-62A54CD8E200}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{987DA661-FEEF-4A16-BC89-62A54CD8E200}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

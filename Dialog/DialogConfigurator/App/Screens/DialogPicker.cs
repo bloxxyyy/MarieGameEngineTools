@@ -21,9 +21,4 @@ public class DialogPicker : Screen
         RenderingObjects.SpriteBatch.Draw(_pixel, new Rectangle(100, 100, 100, 100), Color.Red);
         RenderingObjects.FontBig.DrawText(RenderingObjects.SpriteBatch, "Skibidi", new System.Numerics.Vector2(400, 100), Color.Black);
     }
-
-    public override void Update()
-    {
-        base.Update();
-    }
 }
