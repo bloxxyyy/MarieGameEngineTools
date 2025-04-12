@@ -3,5 +3,5 @@
 namespace YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
 
 public class CharacterContainer() {
-    public List<Npc> NpcData;
+    public List<Npc> NpcData = [];
 }

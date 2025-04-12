@@ -36,8 +36,9 @@ public class Screen : IScreen
 
     public virtual void Update()
     {
-        var mouseDesktopPos = RenderingObjects.Window.ClientBounds.Location.ToVector2() + RenderingObjects.MouseInput.Position.ToVector2();
-        var mousePosInWindow = RenderingObjects.MouseInput.Position.ToVector2();
+        Vector2 mouseDesktopPos = RenderingObjects.Window.ClientBounds.Location.ToVector2() + RenderingObjects.MouseInput.Position.ToVector2();
+
+        Vector2 mousePosInWindow = RenderingObjects.MouseInput.Position.ToVector2();
         if (_WindowBar.Contains(mousePosInWindow) && RenderingObjects.MouseInput.IsLeftButtonPressed() && !_IsDragging)
         {
             _IsDragging = true;

@@ -1,12 +1,6 @@
 ﻿namespace YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
-public class Acquaintance {
-
-	public string Id;
-	public int Attitude;
-
-	public Acquaintance(string id, int attitude) {
-		Id = id;
-		Attitude = attitude;
-	}
+public class Acquaintance(string id, int attitude) {
+	public string Id       = id;
+	public int    Attitude = attitude;
 }

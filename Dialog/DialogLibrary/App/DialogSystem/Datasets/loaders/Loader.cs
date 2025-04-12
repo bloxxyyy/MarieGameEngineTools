@@ -2,10 +2,10 @@
 
 namespace DialogLibrary.App.DialogSystem.Datasets.loaders;
 
-internal class Loader<T>
+internal static class Loader<T>
 {
-	public T Load(string path, string fileName) {
-		var files = Directory.GetFiles(path, fileName + ".json");
+	public static T Load(string path, string fileName) {
+		string[] files = Directory.GetFiles(path, fileName + ".json");
 		if (files.Length == 0)
 			throw new Exception($"No file found for {fileName}");
 		if (files.Length > 1)

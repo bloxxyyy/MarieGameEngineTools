@@ -1,23 +1,14 @@
 ﻿namespace YuiGameSystems.DialogSystem;
-public class DialogActions
-{
-    public Action?			 OnEndConversation					 { get; set; }
-    public Action?			 OnStartConversation				 { get; set; }
-	public Action<string>?   DisplayPrompt			 { get; set; }
-	public Action<string[]>? DisplayPlayerPromptChoicesRequested { get; set; }
-	public Func<string>?	 PlayerAnswerRequested				 { get; set; }
-
-	public DialogActions(
-		Action? onEndConversation,
-		Action? onStartConversation,
-		Action<string>? displayNpcPromptRequested,
-		Action<string[]>? displayPlayerPromptChoicesRequested,
-		Func<string>? playerAnswerRequested
-	) {
-		OnEndConversation					 = onEndConversation;
-		OnStartConversation					 = onStartConversation;
-		DisplayPrompt			 = displayNpcPromptRequested;
-		DisplayPlayerPromptChoicesRequested  = displayPlayerPromptChoicesRequested;
-		PlayerAnswerRequested				 = playerAnswerRequested;
-	}
+public class DialogActions(
+    Action?           onEndConversation,
+    Action?           onStartConversation,
+    Action<string>?   displayNpcPromptRequested,
+    Action<string[]>? displayPlayerPromptChoicesRequested,
+    Func<string>?     playerAnswerRequested
+) {
+    public Action? OnEndConversation                             { get; set; } = onEndConversation;
+    public Action? OnStartConversation                           { get; set; } = onStartConversation;
+    public Action<string>? DisplayPrompt                         { get; set; } = displayNpcPromptRequested;
+    public Action<string[]>? DisplayPlayerPromptChoicesRequested { get; set; } = displayPlayerPromptChoicesRequested;
+    public Func<string>? PlayerAnswerRequested                   { get; set; } = playerAnswerRequested;
 }
