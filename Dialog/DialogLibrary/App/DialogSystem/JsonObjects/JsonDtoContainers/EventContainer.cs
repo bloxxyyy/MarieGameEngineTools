@@ -8,5 +8,5 @@ namespace YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
 /// </summary>
 public class EventContainer()
 {
-	public Events Events;
+    public List<Event> EventData = [];
 }

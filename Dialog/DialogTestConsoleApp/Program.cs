@@ -20,16 +20,18 @@ datasetManager.Datasets.Events.TryGetValue("stop_interaction_event", out Event? 
 if (stopInteractionEvent is null) throw new Exception("Stop interaction event not found");
 stopInteractionEvent.Action = () => Console.WriteLine("Stop interaction event triggered");
 
-void DisplayNpcPromptRequested(string prompt) => Console.WriteLine(prompt);
+void DisplayNpcPromptRequested(string prompt) {
+    Console.WriteLine(prompt);
+}
 
 string PlayerAnswerRequested() {
 	Console.Write("Answer: ");
-	return Console.ReadLine() ?? throw new ArgumentNullException("Answer cannot be null");
+	return Console.ReadLine() ?? throw new Exception("Answer cannot be null");
 }
 
 void DisplayPlayerPromptChoicesRequested(string[] choices) {
 	Console.WriteLine("Choices: ");
-	foreach (var choice in choices) {
+	foreach (string choice in choices) {
 		Console.WriteLine(choice);
 	}
 }
@@ -60,7 +62,7 @@ while (true) {
     {
         Console.WriteLine("Which traits does the player have? use a space to add multiple");
 
-        var traits = datasetManager.Datasets.Traits.Keys.ToList();
+        List<string> traits = [.. datasetManager.Datasets.Traits.Keys];
         for (int i = 0; i < traits.Count; i++)
         {
             Console.ForegroundColor = (ConsoleColor)((i % 15) + 1);
@@ -82,7 +84,7 @@ while (true) {
         answer = Console.ReadLine() ?? throw new Exception("Answer is null");
 
         // if no answer is given, we just use the default player
-        var playerTraits = new List<Trait?>();
+        List<Trait?> playerTraits = [];
         if (answer != string.Empty)
         {
             playerTraits = answer.Split(' ').Select(t => datasetManager.Datasets.Traits.TryGetValue(t, out Trait? trait) ? trait : null).ToList();
@@ -98,20 +100,17 @@ while (true) {
 
     Console.Clear();
 
-	dialog = new Dialog(datasetManager, "example", targetNpc, dialogActions);
-
 	if (player is not null) {
-        dialog.InitializeConversationWith(player, true);
+        dialog = new Dialog(datasetManager, "example", targetNpc, player, true, dialogActions);
 	} else {
         //DialogDatasets.Npcs.TryGetValue("Altaira", out var inter);
         //Interlocutor = inter;traitsWithNoNull
         Interlocutor = datasetManager.Datasets.Characters.Values.Where(n => n != targetNpc).ToList()[new Random().Next(0, datasetManager.Datasets.Characters.Count - 1)];
         Console.WriteLine($"Target: {targetNpc.Name}");
         Console.WriteLine($"Interlocutor: {Interlocutor.Name}");
-		dialog.InitializeConversationWith(Interlocutor, false);
+        dialog = new Dialog(datasetManager, "example", targetNpc, Interlocutor, false, dialogActions);
 	}
 
-    dialog.StartConversation();
     Console.ReadKey();
     Console.Clear();
 }

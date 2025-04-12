@@ -4,5 +4,5 @@ namespace YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
 
 public class TraitContainer()
 {
-	public List<Trait> TraitData;
+	public List<Trait> TraitData = [];
 }

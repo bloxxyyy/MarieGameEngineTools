@@ -9,9 +9,9 @@ public class JsonDataManager<CONTAINER>
     {
         Guard.NotNullOrEmpty(fileLocation);
 
-        var fileNameContainerPairs = new Dictionary<string, CONTAINER>();
+        Dictionary<string, CONTAINER> fileNameContainerPairs = [];
 
-        foreach (var file in Directory.GetFiles(fileLocation, "*.json", SearchOption.AllDirectories))
+        foreach (string file in Directory.GetFiles(fileLocation, "*.json", SearchOption.AllDirectories))
         {
             string json = File.ReadAllText(file) ?? throw new Exception($"File {file} is null");
             CONTAINER container = JsonConvert.DeserializeObject<CONTAINER>(json) ?? throw new Exception($"File {file} could not be deserialized");

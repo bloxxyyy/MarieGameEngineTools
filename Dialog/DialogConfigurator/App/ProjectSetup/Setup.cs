@@ -77,7 +77,7 @@ public static class Program
 {
     private static void Main()
     {
-        using var game = new Setup();
+        using Setup game = new();
         game.Run();
     }
 }

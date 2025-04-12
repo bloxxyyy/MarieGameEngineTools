@@ -1,4 +1,6 @@
 ﻿using DialogLibrary.App.DialogSystem.Datasets;
+using DialogLibrary.App.Helpers;
+
 using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 namespace DialogLibrary.App.DialogSystem.Repositories;
@@ -6,17 +8,17 @@ public class TraitsRepo(DatasetManager datasetManager) {
 	private readonly DatasetManager _DatasetManager = datasetManager;
 
 	public Trait[] GetTraitsByIds(string[] ids) {
-		if (ids == null || ids.Length == 0) return [];
+        if (Guard.IsNullOrEmpty(ids)) return [];
 
-		HashSet<string> idSet          = new HashSet<string>(ids);
-		List<Trait>     matchingTraits = [];
+		HashSet<string> idSet    = new(ids);
+		List<Trait>     matching = [];
 
-		foreach (var trait in _DatasetManager.Datasets.Traits) {
+		foreach (KeyValuePair<string, Trait> trait in _DatasetManager.Datasets.Traits) {
 			if (idSet.Contains(trait.Key)) {
-				matchingTraits.Add(trait.Value);
+				matching.Add(trait.Value);
 			}
 		}
 
-		return [.. matchingTraits];
+		return [.. matching];
 	}
 }
