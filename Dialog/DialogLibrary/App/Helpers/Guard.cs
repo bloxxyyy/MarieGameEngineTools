@@ -1,13 +1,8 @@
-﻿using System.Collections;
+﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 namespace DialogLibrary.App.Helpers;
 public static class Guard
 {
-    public static T NotNull<T>(T? value) where T : class
-    {
-        return value ?? throw new ArgumentException(null, nameof(value));
-    }
-
     public static void NotNullOrEmpty(string? value)
     {
         if (string.IsNullOrEmpty(value)) throw new ArgumentException("Value cannot be null or empty.", nameof(value));
@@ -24,4 +19,6 @@ public static class Guard
 
 		return [.. value];
 	}
+
+    public static List<T> ListOrNullToList<T>(List<T>? items) => items ?? [];
 }

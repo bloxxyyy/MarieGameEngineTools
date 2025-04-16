@@ -1,4 +1,4 @@
-﻿namespace YuiGameSystems.DialogSystem.FileLoading.DataFiles;
+﻿namespace DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
 
 public record Trait(
     string Id,

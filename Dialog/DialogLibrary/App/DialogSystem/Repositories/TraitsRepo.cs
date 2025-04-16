@@ -1,7 +1,6 @@
 ﻿using DialogLibrary.App.DialogSystem.Datasets;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
 using DialogLibrary.App.Helpers;
-
-using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 namespace DialogLibrary.App.DialogSystem.Repositories;
 public class TraitsRepo(DatasetManager datasetManager) {
@@ -10,7 +9,7 @@ public class TraitsRepo(DatasetManager datasetManager) {
 	public Trait[] GetTraitsByIds(string[] ids) {
         if (Guard.IsNullOrEmpty(ids)) return [];
 
-		HashSet<string> idSet    = new(ids);
+		HashSet<string> idSet    = [.. ids];
 		List<Trait>     matching = [];
 
 		foreach (KeyValuePair<string, Trait> trait in _DatasetManager.Datasets.Traits) {

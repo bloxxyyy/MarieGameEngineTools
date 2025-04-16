@@ -1,20 +1,17 @@
 ﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
-using YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
 using DialogLibrary.App.Helpers;
 using DialogLibrary.App.DialogSystem.Repositories;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
 
 namespace DialogLibrary.App.DialogSystem.PromptChanceManagement;
 public class PromptChanceMod {
-    private readonly Dictionary<string, List<string>> _TraitsILike    = [];
-    private readonly Dictionary<string, List<string>> _TraitsIDislike = [];
-
-    private readonly Random _Random = new();
-
-    private readonly Npc             _DialogNpc;
-    private readonly Npc             _InterNpc;
-    private readonly DialogContainer _DialogContainer;
-    private readonly TraitsRepo      _TraitsRepo;
-    private readonly bool            _IsPlayerConversation;
+    private readonly TraitInformation _TraitInformation = new();
+    private readonly Npc              _DialogNpc;
+    private readonly Npc              _InterNpc;
+    private readonly DialogContainer  _DialogContainer;
+    private readonly TraitsRepo       _TraitsRepo;
+    private readonly bool             _IsPlayerConversation;
 
     public PromptChanceMod(
         Npc             targetNpc,
@@ -29,8 +26,8 @@ public class PromptChanceMod {
         _TraitsRepo           = traitsRepo;
         _IsPlayerConversation = isPlayerConversation;
 
-        if (!_IsPlayerConversation) SetupDialogNpcTraits();
-        SetupPlayerTraits();
+        if (!_IsPlayerConversation) SetupDialogNpcTraits(_TraitsRepo);
+        SetupInterTraits(_TraitsRepo);
     }
 
     /// <summary>
@@ -49,57 +46,38 @@ public class PromptChanceMod {
 
         npcChoices = FilterNpcPromptTypesByAcquaintanceStatus(npcChoices, npcFor, npcTo);
 
-        List<Modifier> npcPromptChanceModifiers = SetupChanceModifiers(npcChoices, npcFor, npcTo);
+        List<Modifier> npcPromptChanceModifiers = SetupChanceModifiers(npcChoices, npcFor, npcTo, _TraitInformation);
         Modifier npcPromptChanceModifier = GetRandomChanceModifier(npcPromptChanceModifiers);
 
         string id = npcPromptChanceModifier.NpcPromptId;
         return _DialogContainer.Npc_prompts.Find(x => x.Id == id) ?? throw new Exception("NpcPrompt not found");
     }
 
-    private void SetupDialogNpcTraits() => SetupTraits(_DialogNpc, _InterNpc);
-    private void SetupPlayerTraits()    => SetupTraits(_InterNpc, _DialogNpc);
-
-    private void SetupTraits(Npc forNpc, Npc useNpc)
-    {
-        string[] forNpcTraitIds = Guard.ListOrNullToArray(forNpc.Trait_Ids);
-        string[] useNpcTraitIds = Guard.ListOrNullToArray(useNpc.Trait_Ids);
-
-        Trait[] forNpcTraits = _TraitsRepo.GetTraitsByIds(forNpcTraitIds);
-        Trait[] useNpcTraits = _TraitsRepo.GetTraitsByIds(useNpcTraitIds);
-
-        FindTraits(useNpcTraits, forNpcTraits, out List<string> traitsILike, out List<string> traitsIDislike);
-        _TraitsILike.Add(forNpc.Name, traitsILike);
-        _TraitsIDislike.Add(forNpc.Name, traitsIDislike);
+    private void SetupDialogNpcTraits(TraitsRepo repo) {
+        Trait[] forNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_DialogNpc.Trait_Ids));
+        Trait[] useNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_InterNpc.Trait_Ids));
+        _TraitInformation.AddTraitsToLiked(_DialogNpc.Name, FindLikedTraits(useNpcTraits, forNpcTraits));
+        _TraitInformation.AddTraitsToDisliked(_DialogNpc.Name, FindDislikedTraits(useNpcTraits, forNpcTraits));
     }
 
-    private static void FindTraits(Trait[] traitsToCheck, Trait[] prompterTraits, out List<string> likes, out List<string> dislikes)
-    {
-        List<string> likedTrait = prompterTraits.SelectMany(trait => trait.Likes ?? Enumerable.Empty<string>()).ToList();
-        List<string> dislikedTrait = prompterTraits.SelectMany(trait => trait.Dislikes ?? Enumerable.Empty<string>()).ToList();
-        likes = FindTraitsWithDuplicates(traitsToCheck, likedTrait);
-        dislikes = FindTraitsWithDuplicates(traitsToCheck, dislikedTrait);
+    private void SetupInterTraits(TraitsRepo repo) {
+        Trait[] forNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_InterNpc.Trait_Ids));
+        Trait[] useNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_DialogNpc.Trait_Ids));
+        _TraitInformation.AddTraitsToLiked(_InterNpc.Name, FindLikedTraits(useNpcTraits, forNpcTraits));
+        _TraitInformation.AddTraitsToDisliked(_InterNpc.Name, FindDislikedTraits(useNpcTraits, forNpcTraits));
     }
 
-    private Modifier GetRandomChanceModifier(List<Modifier> npcPromptChanceModifiers)
-    {
-        float totalChance = npcPromptChanceModifiers.Last().EndModifier;
-        int randomChance = _Random.Next(0, (int)totalChance);
-        return npcPromptChanceModifiers.First(x => x.StartModifier <= randomChance && x.EndModifier >= randomChance);
-    }
-
-    private List<Modifier> SetupChanceModifiers(PromptChance[] npcChoices, Npc npcFor, Npc npcTo)
-    {
+    private static List<Modifier> SetupChanceModifiers(PromptChance[] npcChoices, Npc npcFor, Npc npcTo, TraitInformation traitInfo) {
         List<Modifier> npcPromptChanceModifiers = [];
         int startModifier = 0;
-        float startChance = npcChoices.Length / 100;
 
         foreach (PromptChance choice in npcChoices)
         {
             PromptType promptType = choice.Prompt_type == null ? PromptType.Neutral :
                 (PromptType)Enum.Parse(typeof(PromptType), choice.Prompt_type);
 
-            int modifier = (int)(startChance + choice.Base_chance_percentage);
-            modifier = ModifyForTraitOpinion(promptType, modifier, npcTo);
+            int modifier = choice.Base_chance_percentage;
+            modifier = ModifyForTraitOpinion(promptType, modifier, npcTo.Name, traitInfo);
             modifier = ModifyForAttitude(promptType, modifier, npcFor, npcTo);
 
             int endModifier = startModifier + modifier;
@@ -109,6 +87,24 @@ public class PromptChanceMod {
         }
 
         return npcPromptChanceModifiers;
+    }
+
+    private static List<string> FindLikedTraits(Trait[] traitsToCheck, Trait[] prompterTraits) {
+        List<string> likedTrait = prompterTraits.SelectMany(trait => trait.Likes ?? Enumerable.Empty<string>()).ToList();
+        Dictionary<string, int> likedTraitsNameWithCount = GetTraitWithCountOfTimesFoundInList(likedTrait);
+        return GetTraitsByCount(traitsToCheck, likedTraitsNameWithCount);
+    }
+
+    private static List<string> FindDislikedTraits(Trait[] traitsToCheck, Trait[] prompterTraits) {
+        List<string> dislikedTrait = prompterTraits.SelectMany(trait => trait.Dislikes ?? Enumerable.Empty<string>()).ToList();
+        Dictionary<string, int> dislikeTraitsNameWithCount = GetTraitWithCountOfTimesFoundInList(dislikedTrait);
+        return GetTraitsByCount(traitsToCheck, dislikeTraitsNameWithCount);
+    }
+
+    private static Modifier GetRandomChanceModifier(List<Modifier> npcPromptChanceModifiers) {
+        float totalChance = npcPromptChanceModifiers.Last().EndModifier;
+        int randomChance = new Random().Next(0, (int)totalChance);
+        return npcPromptChanceModifiers.First(x => x.StartModifier <= randomChance && x.EndModifier >= randomChance);
     }
 
     private static PromptChance[] FilterNpcPromptTypesByAcquaintanceStatus(PromptChance[] npcChoices, Npc forNpc, Npc toNpc)
@@ -124,17 +120,20 @@ public class PromptChanceMod {
         return choices;
     }
 
-    private static bool HasRequiredAttitudeForChoice(PromptChance npcPromptChance, int attitude)
+    private static bool HasRequiredAttitudeForChoice(PromptChance npcPromptChance, int currentAttitude)
     {
-        int exl = npcPromptChance.Exclusive_to_attitude;
-        return exl == 0 || (exl > 0 && exl < attitude) || (exl < 0 && exl > attitude);
+        int neededAttitude = npcPromptChance.Exclusive_to_attitude;
+        bool forPossitiveAndHigherThanNeeded = neededAttitude > 0 && neededAttitude < currentAttitude;
+        bool forNegativeAndLowerThanNeeded   = neededAttitude < 0 && neededAttitude > currentAttitude;
+        return neededAttitude == 0 || forPossitiveAndHigherThanNeeded || forNegativeAndLowerThanNeeded;
     }
 
     private static bool IsNeutralOrFitsAttitude(PromptChance npcPromptChance, int attitude)
     {
         const int modifier = -5;
-        PromptType type = npcPromptChance.Prompt_type == null ? PromptType.Neutral :
-        (PromptType)Enum.Parse(typeof(PromptType), npcPromptChance.Prompt_type);
+        PromptType type = npcPromptChance.Prompt_type == null
+            ? PromptType.Neutral
+            : (PromptType)Enum.Parse(typeof(PromptType), npcPromptChance.Prompt_type);
 
         return (type == PromptType.Friendly && attitude > modifier)
             || (type == PromptType.Hostile && attitude < -modifier)
@@ -148,15 +147,15 @@ public class PromptChanceMod {
         Acquaintance[] acquaintances = Guard.ListOrNullToArray(npcFor.Acquaintances);
         int attitude = Array.Find(acquaintances, acquaintance => acquaintance.Id == npcTo.Id)?.Attitude ?? 0;
 
-        int OneFourthOfAttiudeAsBonus = Math.Abs(attitude / 4);
+        int OneFourthOfAttitudeAsBonus = Math.Abs(attitude / 4);
         if (promptType == PromptType.Friendly && attitude > 0)
         {
-            return modifier += OneFourthOfAttiudeAsBonus;
+            return modifier += OneFourthOfAttitudeAsBonus;
         }
 
         if (promptType == PromptType.Hostile && attitude < 0)
         {
-            return modifier += OneFourthOfAttiudeAsBonus;
+            return modifier += OneFourthOfAttitudeAsBonus;
         }
 
         return modifier;
@@ -165,12 +164,12 @@ public class PromptChanceMod {
     /// <summary>
     /// Get, Filter and return the modifier with the trait bonus.
     /// </summary>
-    private int ModifyForTraitOpinion(PromptType promptType, int modifier, Npc npcTo)
+    private static int ModifyForTraitOpinion(PromptType promptType, int modifier, string npcToName, TraitInformation traitInformation)
     {
         if (promptType == PromptType.Neutral) return modifier;
 
-        List<string> foundTraitsILike = _TraitsILike[npcTo.Name] ?? [];
-        List<string> foundTraitsIDislike = _TraitsIDislike[npcTo.Name] ?? [];
+        List<string> foundTraitsILike = traitInformation.GetTraitsILike(npcToName);
+        List<string> foundTraitsIDislike = traitInformation.GetTraitsIDislike(npcToName);
 
         FilterAndReturnDistinct(ref foundTraitsILike, ref foundTraitsIDislike);
         return GetModifierWithTraitBonus(promptType, 15, modifier, foundTraitsILike, foundTraitsIDislike);
@@ -229,11 +228,23 @@ public class PromptChanceMod {
         traitsIDislikeWithDuplicates = traitsIDislikeWithDuplicates.Distinct().ToList();
     }
 
-    private static List<string> FindTraitsWithDuplicates(Trait[] traitsToCheck, List<string> filterList)
-    {
-        return traitsToCheck
-            .Where(x => filterList.Contains(x.Name))
-            .SelectMany(x => Enumerable.Repeat(x.Name, filterList.Count(y => y == x.Name)))
-            .ToList();
+    private static List<string> GetTraitsByCount(Trait[] traits, Dictionary<string, int> traitsNameWithCount) {
+        List<string> result = [];
+        foreach (Trait trait in traits) {
+            if (traitsNameWithCount.TryGetValue(trait.Name, out int count)) {
+                for (int i = 0; i < count; i++) result.Add(trait.Name);
+            }
+        }
+
+        return result;
+    }
+
+    private static Dictionary<string, int> GetTraitWithCountOfTimesFoundInList(List<string> other) {
+        Dictionary<string, int> traitsNameWithCount = [];
+        foreach (string name in other) {
+            traitsNameWithCount[name] = traitsNameWithCount.TryGetValue(name, out int count) ? count + 1 : 1;
+        }
+
+        return traitsNameWithCount;
     }
 }

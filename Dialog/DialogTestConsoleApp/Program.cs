@@ -1,4 +1,6 @@
 ﻿using DialogLibrary.App.DialogSystem.Datasets;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
+
 using YuiGameSystems.DialogSystem;
 using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 

@@ -1,6 +1,6 @@
-﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
+﻿using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
 
-namespace YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
+namespace DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
 
 public class TraitContainer()
 {

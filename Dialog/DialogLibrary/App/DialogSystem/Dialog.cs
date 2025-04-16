@@ -1,10 +1,11 @@
 ﻿using DialogLibrary.App.DialogSystem.ActionManagement;
 using DialogLibrary.App.DialogSystem.Datasets;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
 using DialogLibrary.App.DialogSystem.PromptChanceManagement;
 using DialogLibrary.App.DialogSystem.Repositories;
 using DialogLibrary.App.Helpers;
+
 using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
-using YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
 
 namespace YuiGameSystems.DialogSystem;
 public class Dialog
@@ -45,18 +46,32 @@ public class Dialog
             _PlayerChoiceHandler = new PlayerChoiceHandler(_DialogActions);
         }
 
-        AcquaintanceRepo.AddAsAcquaintances(_DialogNpc, _interNpc);
+		if (!AcquaintanceRepo.DoesNpcHaveAcquaintance(_DialogNpc, _interNpc)) {
+            AcquaintanceRepo.TryAddAsAcquaintance(_DialogNpc, _interNpc);
+        }
+
+		if (!AcquaintanceRepo.DoesNpcHaveAcquaintance(_interNpc, _DialogNpc)) {
+			AcquaintanceRepo.TryAddAsAcquaintance(_interNpc, _DialogNpc);
+		}
 
         _DialogActions.OnStartConversation?.Invoke();
         RunDialog();
     }
 
 	private void OnDialog(List<string> toSay) {
-		_DialogActions.DisplayPrompt?.Invoke(toSay[_Random.Next(0, toSay.Count)]);
+        bool CurrentlySpeakingIsDialogNpc() => _CurrentSpeaking.Id == _DialogNpc.Id;
+		bool CurrentlySpeakingIsInterlocutor() => _CurrentSpeaking.Id == _interNpc.Id;
 
-		Acquaintance? Acquaintance = AcquaintanceRepo.GetAcquaintanceOrNullIfTalkingToPlayer(
-			_CurrentSpeaking.Id, _DialogNpc, _interNpc, _IsPlayerConversation
-		);
+        _DialogActions.DisplayPrompt?.Invoke(toSay[_Random.Next(0, toSay.Count)]);
+
+		Acquaintance? Acquaintance = null;
+        if (CurrentlySpeakingIsDialogNpc() && !_IsPlayerConversation) {
+            Acquaintance = AcquaintanceRepo.TryGetAcquaintance(_DialogNpc, _interNpc);
+        }
+
+		if (CurrentlySpeakingIsInterlocutor()) {
+			Acquaintance = AcquaintanceRepo.TryGetAcquaintance(_interNpc, _DialogNpc);
+		}
 
 		if (Acquaintance != null) { // meaning the dialogNpc made a remark, but a player does not alter attitude
 			Acquaintance.Attitude += _CurrentNpcPrompt.Added_Attitude_Towards_target_interlocutor ?? 0;
@@ -66,7 +81,7 @@ public class Dialog
 		_CurrentSpeaking = (_CurrentSpeaking.Id == _interNpc.Id) ? _DialogNpc : _interNpc;
 	}
 
-	private void RunDialog() {
+    private void RunDialog() {
 		OnDialog(_CurrentNpcPrompt.Text);
 
 		// npcToNpc

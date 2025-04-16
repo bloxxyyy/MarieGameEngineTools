@@ -1,5 +1,7 @@
-﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
-using YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
+﻿using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
+
+using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 namespace DialogLibrary.App.DialogSystem.Datasets;
 
