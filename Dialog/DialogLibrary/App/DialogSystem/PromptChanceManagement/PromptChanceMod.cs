@@ -1,34 +1,20 @@
 ﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 using DialogLibrary.App.Helpers;
-using DialogLibrary.App.DialogSystem.Repositories;
 using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
 using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
+using DialogLibrary.App.DialogSystem.TraitManagement;
 
 namespace DialogLibrary.App.DialogSystem.PromptChanceManagement;
-public class PromptChanceMod {
-    private readonly TraitInformation _TraitInformation = new();
-    private readonly Npc              _DialogNpc;
-    private readonly Npc              _InterNpc;
-    private readonly DialogContainer  _DialogContainer;
-    private readonly TraitsRepo       _TraitsRepo;
-    private readonly bool             _IsPlayerConversation;
-
-    public PromptChanceMod(
-        Npc             targetNpc,
-        Npc             interlocutorNpc,
-        bool            isPlayerConversation,
-        DialogContainer dialogContainer,
-        TraitsRepo      traitsRepo
-    ) {
-        _DialogNpc            = targetNpc;
-        _InterNpc             = interlocutorNpc;
-        _DialogContainer      = dialogContainer;
-        _TraitsRepo           = traitsRepo;
-        _IsPlayerConversation = isPlayerConversation;
-
-        if (!_IsPlayerConversation) SetupDialogNpcTraits(_TraitsRepo);
-        SetupInterTraits(_TraitsRepo);
-    }
+public class PromptChanceMod(
+    Npc targetNpc,
+    Npc interlocutorNpc,
+    DialogContainer dialogContainer,
+    TraitInformation traitInformation
+) {
+    private readonly TraitInformation _TraitInformation = traitInformation;
+    private readonly Npc              _DialogNpc        = targetNpc;
+    private readonly Npc              _InterNpc         = interlocutorNpc;
+    private readonly DialogContainer _DialogContainer   = dialogContainer;
 
     /// <summary>
     /// Gets a connected NpcPrompt by calculating the chance of each NpcPromptChance.
@@ -53,20 +39,6 @@ public class PromptChanceMod {
         return _DialogContainer.Npc_prompts.Find(x => x.Id == id) ?? throw new Exception("NpcPrompt not found");
     }
 
-    private void SetupDialogNpcTraits(TraitsRepo repo) {
-        Trait[] forNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_DialogNpc.Trait_Ids));
-        Trait[] useNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_InterNpc.Trait_Ids));
-        _TraitInformation.AddTraitsToLiked(_DialogNpc.Name, FindLikedTraits(useNpcTraits, forNpcTraits));
-        _TraitInformation.AddTraitsToDisliked(_DialogNpc.Name, FindDislikedTraits(useNpcTraits, forNpcTraits));
-    }
-
-    private void SetupInterTraits(TraitsRepo repo) {
-        Trait[] forNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_InterNpc.Trait_Ids));
-        Trait[] useNpcTraits = repo.GetTraitsByIds(Guard.ListOrNullToArray(_DialogNpc.Trait_Ids));
-        _TraitInformation.AddTraitsToLiked(_InterNpc.Name, FindLikedTraits(useNpcTraits, forNpcTraits));
-        _TraitInformation.AddTraitsToDisliked(_InterNpc.Name, FindDislikedTraits(useNpcTraits, forNpcTraits));
-    }
-
     private static List<Modifier> SetupChanceModifiers(PromptChance[] npcChoices, Npc npcFor, Npc npcTo, TraitInformation traitInfo) {
         List<Modifier> npcPromptChanceModifiers = [];
         int startModifier = 0;
@@ -77,7 +49,7 @@ public class PromptChanceMod {
                 (PromptType)Enum.Parse(typeof(PromptType), choice.Prompt_type);
 
             int modifier = choice.Base_chance_percentage;
-            modifier = ModifyForTraitOpinion(promptType, modifier, npcTo.Name, traitInfo);
+            modifier = ModifyForTraitOpinion(promptType, modifier, npcFor.Name, traitInfo);
             modifier = ModifyForAttitude(promptType, modifier, npcFor, npcTo);
 
             int endModifier = startModifier + modifier;
@@ -87,18 +59,6 @@ public class PromptChanceMod {
         }
 
         return npcPromptChanceModifiers;
-    }
-
-    private static List<string> FindLikedTraits(Trait[] traitsToCheck, Trait[] prompterTraits) {
-        List<string> likedTrait = prompterTraits.SelectMany(trait => trait.Likes ?? Enumerable.Empty<string>()).ToList();
-        Dictionary<string, int> likedTraitsNameWithCount = GetTraitWithCountOfTimesFoundInList(likedTrait);
-        return GetTraitsByCount(traitsToCheck, likedTraitsNameWithCount);
-    }
-
-    private static List<string> FindDislikedTraits(Trait[] traitsToCheck, Trait[] prompterTraits) {
-        List<string> dislikedTrait = prompterTraits.SelectMany(trait => trait.Dislikes ?? Enumerable.Empty<string>()).ToList();
-        Dictionary<string, int> dislikeTraitsNameWithCount = GetTraitWithCountOfTimesFoundInList(dislikedTrait);
-        return GetTraitsByCount(traitsToCheck, dislikeTraitsNameWithCount);
     }
 
     private static Modifier GetRandomChanceModifier(List<Modifier> npcPromptChanceModifiers) {
@@ -168,8 +128,8 @@ public class PromptChanceMod {
     {
         if (promptType == PromptType.Neutral) return modifier;
 
-        List<string> foundTraitsILike = traitInformation.GetTraitsILike(npcToName);
-        List<string> foundTraitsIDislike = traitInformation.GetTraitsIDislike(npcToName);
+        List<string> foundTraitsILike = traitInformation.GetTraitsILikeFromTarget(npcToName);
+        List<string> foundTraitsIDislike = traitInformation.GetTraitsIDislikeFromTarget(npcToName);
 
         FilterAndReturnDistinct(ref foundTraitsILike, ref foundTraitsIDislike);
         return GetModifierWithTraitBonus(promptType, 15, modifier, foundTraitsILike, foundTraitsIDislike);
@@ -226,25 +186,5 @@ public class PromptChanceMod {
         // So now we can count the traits distinct and see if we have more likes or dislikes.
         traitsILikeWithDuplicates = traitsILikeWithDuplicates.Distinct().ToList();
         traitsIDislikeWithDuplicates = traitsIDislikeWithDuplicates.Distinct().ToList();
-    }
-
-    private static List<string> GetTraitsByCount(Trait[] traits, Dictionary<string, int> traitsNameWithCount) {
-        List<string> result = [];
-        foreach (Trait trait in traits) {
-            if (traitsNameWithCount.TryGetValue(trait.Name, out int count)) {
-                for (int i = 0; i < count; i++) result.Add(trait.Name);
-            }
-        }
-
-        return result;
-    }
-
-    private static Dictionary<string, int> GetTraitWithCountOfTimesFoundInList(List<string> other) {
-        Dictionary<string, int> traitsNameWithCount = [];
-        foreach (string name in other) {
-            traitsNameWithCount[name] = traitsNameWithCount.TryGetValue(name, out int count) ? count + 1 : 1;
-        }
-
-        return traitsNameWithCount;
     }
 }

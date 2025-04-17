@@ -1,5 +1,6 @@
-﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
-using YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
+﻿using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
+
+using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 namespace YuiGameSystems.DialogSystem;
 public class PlayerChoiceHandler(DialogActions _DialogActions) {

@@ -3,6 +3,7 @@ using DialogLibrary.App.DialogSystem.Datasets;
 using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
 using DialogLibrary.App.DialogSystem.PromptChanceManagement;
 using DialogLibrary.App.DialogSystem.Repositories;
+using DialogLibrary.App.DialogSystem.TraitManagement;
 using DialogLibrary.App.Helpers;
 
 using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
@@ -17,10 +18,9 @@ public class Dialog
     private readonly DialogContainer      _Dialog;
     private readonly DialogActions        _DialogActions;
     private readonly PromptChanceManager  _PromptChanceManager;
-    private readonly TraitsRepo           _TraitsRepo;
     private readonly DatasetManager       _DatasetManager;
-    private readonly bool                 _IsPlayerConversation;
     private readonly PlayerChoiceHandler? _PlayerChoiceHandler;
+    private readonly bool                 _IsPlayerConversation;
 
     private NpcPrompt _CurrentNpcPrompt;
     private Npc       _CurrentSpeaking;
@@ -39,8 +39,12 @@ public class Dialog
 
         _IsPlayerConversation = isPlayerConversation;
         _interNpc = interlocutor;
-        _TraitsRepo = new TraitsRepo(_DatasetManager);
-        _PromptChanceManager = new PromptChanceManager(_DialogNpc, _interNpc, _IsPlayerConversation, _TraitsRepo, _Dialog);
+        TraitsRepo traitsRepo = new(_DatasetManager);
+
+        TraitInformationManager traitInformationManager = new(_IsPlayerConversation, traitsRepo);
+		TraitInformation traitInformation = traitInformationManager.GetTraitInformation(_DialogNpc, _interNpc);
+
+        _PromptChanceManager = new PromptChanceManager(_DialogNpc, _interNpc, traitsRepo, _Dialog, traitInformation);
 
         if (_IsPlayerConversation) {
             _PlayerChoiceHandler = new PlayerChoiceHandler(_DialogActions);

@@ -7,8 +7,8 @@ public class TryGetAcquaintanceTests {
     [Fact]
     public void ReturnsAcquaintanceWhenExists() {
         // Arrange
-        Npc findNpc = new("B", "", [], []);
-        Npc toNpc   = new("A", "", [], [new("C", 0), new (findNpc.Id, 0)]);
+        Npc findNpc = new("B", "", null, []);
+        Npc toNpc   = new("A", "", null, [new("C", 0), new (findNpc.Id, 0)]);
 
         // Act
         Acquaintance? result = AcquaintanceRepo.TryGetAcquaintance(toNpc, findNpc);
@@ -21,8 +21,21 @@ public class TryGetAcquaintanceTests {
     [Fact]
     public void ReturnsNullWhenAcquaintancesNotInList() {
         // Arrange
-        Npc findNpc = new("B", "", [], []);
-        Npc toNpc   = new("A", "", [], [new("C", 0)]);
+        Npc findNpc = new("B", "", null, []);
+        Npc toNpc   = new("A", "", null, [new("C", 0)]);
+
+        // Act
+        Acquaintance? result = AcquaintanceRepo.TryGetAcquaintance(toNpc, findNpc);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void ReturnsNullWhenAcquaintancesNull() {
+        // Arrange
+        Npc findNpc = new("B", "", null, null);
+        Npc toNpc   = new("A", "", null, null);
 
         // Act
         Acquaintance? result = AcquaintanceRepo.TryGetAcquaintance(toNpc, findNpc);
