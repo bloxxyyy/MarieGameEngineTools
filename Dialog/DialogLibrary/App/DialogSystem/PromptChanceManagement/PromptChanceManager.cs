@@ -1,14 +1,23 @@
-﻿using DialogLibrary.App.DialogSystem.Repositories;
+﻿using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
+using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
+using DialogLibrary.App.DialogSystem.Repositories;
+using DialogLibrary.App.DialogSystem.TraitManagement;
 using DialogLibrary.App.Helpers;
+
 using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
-using YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
 
 namespace DialogLibrary.App.DialogSystem.PromptChanceManagement;
-public class PromptChanceManager(Npc targetNpc, Npc interNpc, bool isPlayerConversation, TraitsRepo traitsRepo, DialogContainer _Dialog)
+public class PromptChanceManager(
+    Npc targetNpc,
+    Npc interNpc,
+    TraitsRepo traitsRepo,
+    DialogContainer dialog,
+    TraitInformation traitInformation
+)
 {
     private readonly TraitsRepo            _TraitsRepo = traitsRepo;
-    private readonly DialogContainer       _Dialog = _Dialog;
-    private readonly PromptChanceMod       _ChoiceModifyingHelper = new(targetNpc, interNpc, isPlayerConversation, _Dialog, traitsRepo);
+    private readonly DialogContainer       _Dialog = dialog;
+    private readonly PromptChanceMod       _ChoiceModifyingHelper = new(targetNpc, interNpc, dialog, traitInformation);
 
     public bool TryGetPromptByPromptChances(List<string> prompChanceIds, Npc currentSpeakingNpc, out NpcPrompt? npcPrompt)
     {
@@ -48,7 +57,7 @@ public class PromptChanceManager(Npc targetNpc, Npc interNpc, bool isPlayerConve
 
     private PromptChance[] GetPromptChancesByIds(string[] promptChanceIds)
     {
-        HashSet<string>    idSet           = new(promptChanceIds);
+        HashSet<string>    idSet           = [.. promptChanceIds];
         List<PromptChance> matchingPrompts = [];
 
         foreach (PromptChance prompt in _Dialog.Npc_prompt_chances)

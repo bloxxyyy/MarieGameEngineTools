@@ -1,7 +1,6 @@
-﻿using DialogLibrary.App.Helpers;
-using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
+﻿using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
-namespace YuiGameSystems.DialogSystem.FileLoading.ValidatedDataContainers;
+namespace DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoContainers;
 
 /// <summary>
 /// This class is responsible for holding Event Data

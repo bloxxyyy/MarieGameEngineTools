@@ -1,4 +1,6 @@
-﻿namespace YuiGameSystems.DialogSystem.FileLoading.DataFiles;
+﻿using DialogLibrary.App.DialogSystem.JsonObjects.JsonDtoObjects;
+
+namespace YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 public record NpcPrompt(
     string Id,
