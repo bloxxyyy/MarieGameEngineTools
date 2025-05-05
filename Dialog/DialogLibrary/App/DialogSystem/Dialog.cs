@@ -41,10 +41,10 @@ public class Dialog
         _interNpc = interlocutor;
         TraitsRepo traitsRepo = new(_DatasetManager);
 
-        TraitInformationManager traitInformationManager = new(_IsPlayerConversation, traitsRepo);
-		TraitInformation traitInformation = traitInformationManager.GetTraitInformation(_DialogNpc, _interNpc);
+		NpcTraitPreference  DialogNpcTraitPreference = NpcTraitPreferenceFactory.Create(_DialogNpc, traitsRepo);
+		NpcTraitPreference InterTraitPreference      = NpcTraitPreferenceFactory.Create(_interNpc, traitsRepo);
 
-        _PromptChanceManager = new PromptChanceManager(_DialogNpc, _interNpc, traitsRepo, _Dialog, traitInformation);
+        _PromptChanceManager = new PromptChanceManager(traitsRepo, _Dialog, DialogNpcTraitPreference, InterTraitPreference);
 
         if (_IsPlayerConversation) {
             _PlayerChoiceHandler = new PlayerChoiceHandler(_DialogActions);

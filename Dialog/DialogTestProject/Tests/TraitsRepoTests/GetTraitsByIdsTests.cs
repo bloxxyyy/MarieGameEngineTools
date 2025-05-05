@@ -5,7 +5,6 @@ using DialogLibrary.App.DialogSystem.Repositories;
 namespace DialogTests.Tests.TraitsRepoTests;
 
 public class GetTraitsByIdsTests {
-
     private static DatasetManager CreateDatasetManagerWithTraits(Dictionary<string, Trait> traits) {
         DatasetManager datasetManager = new();
         datasetManager.Datasets.Traits = traits;

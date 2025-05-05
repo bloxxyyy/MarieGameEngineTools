@@ -1,8 +1,8 @@
-﻿using YuiConfigurator.App.RenderingHelper;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using DialogConfigurator.App.RenderingHelper;
 
-namespace YuiConfigurator.App.Screens;
+namespace DialogConfigurator.App.Screens;
 
 public class DialogPicker : Screen
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 namespace DialogConfigurator.App.Helpers;
-internal static class ColorHelper
+internal static class HexColorHelper
 {
     internal static Color ColorFromHex(string hex)
     {

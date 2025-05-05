@@ -8,16 +8,15 @@ using YuiGameSystems.DialogSystem.FileLoading.DataFiles;
 
 namespace DialogLibrary.App.DialogSystem.PromptChanceManagement;
 public class PromptChanceManager(
-    Npc targetNpc,
-    Npc interNpc,
     TraitsRepo traitsRepo,
     DialogContainer dialog,
-    TraitInformation traitInformation
+    NpcTraitPreference dialogNpcTraitPreference,
+    NpcTraitPreference interNpcTraitPreference
 )
 {
     private readonly TraitsRepo            _TraitsRepo = traitsRepo;
     private readonly DialogContainer       _Dialog = dialog;
-    private readonly PromptChanceMod       _ChoiceModifyingHelper = new(targetNpc, interNpc, dialog, traitInformation);
+    private readonly PromptChanceMod       _ChoiceModifyingHelper = new(dialog, dialogNpcTraitPreference, interNpcTraitPreference);
 
     public bool TryGetPromptByPromptChances(List<string> prompChanceIds, Npc currentSpeakingNpc, out NpcPrompt? npcPrompt)
     {
@@ -25,7 +24,7 @@ public class PromptChanceManager(
         PromptChance[] possiblePromptChances = GetPossiblePromptChances(prompChanceIds, currentSpeakingNpc);
         if (Guard.IsNullOrEmpty(possiblePromptChances)) return false;
 
-        npcPrompt = _ChoiceModifyingHelper.GetAConnectedPromptByChanceModifier(possiblePromptChances, currentSpeakingNpc.Id);
+        npcPrompt = _ChoiceModifyingHelper.GetAConnectedPromptByChanceModifier(possiblePromptChances, currentSpeakingNpc);
         return true;
     }
 
