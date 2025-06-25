@@ -1,78 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using DialogConfigurator.App.Helpers;
+using DialogConfigurator.App.Input;
 using DialogConfigurator.App.RenderingHelper;
+using DialogConfigurator.App.Ui.DataClasses;
 
 using FontStashSharp;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-using MonoGame.Extended;
+using static System.Collections.Specialized.BitVector32;
 
 namespace DialogConfigurator.App.Ui;
 
-internal sealed class UI {
 
+internal sealed class UI {
     internal ParentableElement BaseElement { get; set; }
     internal UIElement CurrentElement { get; set; }
+    internal static Dictionary<string, Click> HitTestRegistry { get; } = [];
+    internal static string LastClickedId { get; set; } = string.Empty;
 
     private UI() {
-        BaseElement = new ParentableElement();
+        BaseElement = new BaseWindowElement(typeof(UI).Name + Guid.NewGuid().ToString("N"));
         CurrentElement = BaseElement;
     }
 
     private static UI _Instance;
-    public  static UI Instance => _Instance ??= new UI();
+    internal static UI Instance => _Instance ??= new UI();
 
-    public static void EndTag() {
-        Instance.CurrentElement = _Instance.CurrentElement.ParentElement;
+    internal static void EndTag() {
+        if (Instance.CurrentElement != Instance.BaseElement) {
+            Instance.CurrentElement = Instance.CurrentElement.ParentElement;
+        }
     }
 
-    public static void Tag<T>(Action<T> init = null) where T : UIElement, new() {
-        T element = new();
+    internal static void Tag<T>(string id = "", Action<T> init = null) where T : UIElement {
+
+        if (id?.Length == 0) id = typeof(T).Name + Guid.NewGuid().ToString("N");
+
+        T element = ActivatorFactory.CreateWithId<T>(id);
         init?.Invoke(element);
 
         if (Instance.CurrentElement is not ParentableElement) EndTag();
 
-        if (Instance.CurrentElement is ParentableElement parentableElement) {
-            element.ParentElement = Instance.CurrentElement;
-            parentableElement.Enqueue(element);
-        }
+        element.ParentElement = (ParentableElement)Instance.CurrentElement;
+        element.ParentElement.Enqueue(element);
 
         Instance.CurrentElement = element;
     }
 
-    public static void Draw() {
+    internal static void Draw() {
+        HitTestRegistry.Clear();
         Instance.BaseElement.Draw();
         Instance.CurrentElement = Instance.BaseElement;
     }
+
+    internal static void ProcessInteractions() {
+        MouseInput mouse = RenderingObjects.MouseInput;
+        bool isLeftMouseButtonPressed = mouse.IsLeftButtonReleased();
+        Vector2 mousePosition = mouse.Position.ToVector2();
+
+        if (isLeftMouseButtonPressed) {
+
+            KeyValuePair<string, Click>? clicked = HitTestRegistry.LastOrDefault(entry => entry.Value.bounds.Contains(mousePosition));
+            LastClickedId = string.Empty; // Reset LastClickedId to empty string before checking for a click
+
+            if (clicked == null) return;
+
+            KeyValuePair<string, Click> kvp = (KeyValuePair<string, Click>)clicked;
+            LastClickedId = kvp.Key;
+            kvp.Value.onClick?.Invoke();
+        }
+    }
 }
 
-internal struct Position(int x, int y) {
-    internal int X = x;
-    internal int Y = y;
+internal abstract class UIElement(string id = "") {
+    internal string             Id            { get; } = id != "" ? id : typeof(UIElement).Name + Guid.NewGuid().ToString("N");
+    internal Position           Position      { get; set; } = new(0, 0);
+    internal ParentableElement  ParentElement { get; set; }
+    
+    internal abstract void      Draw();
+    internal abstract Rectangle GetBounds();
 }
 
-internal struct Padding(int leftRight, int topBottom) {
-    internal int LeftRight = leftRight;
-    internal int TopBottom = topBottom;
-}
-
-internal struct Border(string colorHex, int size) {
-    internal string ColorHex = colorHex;
-    internal int    Size     = size;
-}
-
-internal class UIElement() {
-    internal Position  Position      { get; set; } = new Position(0, 0);
-    internal UIElement ParentElement { get; set; }
-
-    internal virtual void Draw() {}
-}
-
-internal class ParentableElement() : UIElement() {
+internal abstract class ParentableElement(string id = "") : UIElement(id) {
     private readonly Queue<UIElement> _Elements = new();
 
     internal void Enqueue(UIElement element) => _Elements.Enqueue(element);
@@ -84,71 +97,112 @@ internal class ParentableElement() : UIElement() {
     }
 }
 
-internal class Button : UIElement {
-    public string  Text               { get; set; } = "Button";
-    public string  FontHexColor       { get; set; } = "#FFFFFF";
-    public string  BackgroundHexColor { get; set; } = "#000000";
-    public Border? Border             { get; set; } = null;
-    public Padding Padding            { get; set; } = new Padding(0, 0);
+internal class InputField(string id = "") : UIElement(id), IInput {
+
+    internal Text TextElement { get; set; } = new();
+    internal string BackgroundHexColor { get; set; } = "#000000";
+    internal Border? Border { get; set; } = null;
+    internal Padding Padding { get; set; } = new Padding(0, 0);
+    public Func<string> Consume { get; set; }
+
+    internal override Rectangle GetBounds() {
+
+        Rectangle textBounds = TextElement.GetBounds();
+
+        return new Rectangle(
+            Position.X,
+            Position.Y,
+            textBounds.Width + (Padding.LeftRight * 2),
+            textBounds.Height + (Padding.TopBottom * 2)
+        );
+    }
 
     internal override void Draw() {
-        DynamicSpriteFont font = RenderingObjects.FontBig;
-        Vector2 size = font.MeasureString(Text);
 
-        DrawHelper.DrawHelperBackground(size.X, font.LineHeight, BackgroundHexColor, Position, Border, Padding);
+        Rectangle bounds = GetBounds();
+        UI.HitTestRegistry.Add(Id, new Click(() => { }, bounds));
 
-        if (Padding.LeftRight > 0) Position = new Position(Position.X + (Padding.LeftRight / 2), Position.Y);
-        if (Padding.TopBottom > 0) Position = new Position(Position.X, Position.Y + (Padding.TopBottom / 2));
+        DrawHelper.DrawHelperBackground(
+            bounds.Width,
+            bounds.Height,
+            BackgroundHexColor,
+            Position,
+            Border,
+            Padding
+        );
 
-         RenderingObjects.SpriteBatch.DrawString(font, Text, new Vector2(Position.X, Position.Y), HexColorHelper.ColorFromHex(FontHexColor));
+        float textX = Position.X + Padding.LeftRight;
+        float textY = Position.Y + Padding.TopBottom;
+        TextElement.Position = new Position((int)textX, (int)textY);
+        TextElement.Draw();
     }
 }
 
-internal static class DrawHelper {
-    internal static void DrawHelperBackground(float width, float height, string color, Position pos, Border? border = null, Padding? padding = null) {
-        if (padding != null) {
-            width += ((Padding)padding).LeftRight;
-            height += ((Padding)padding).TopBottom;
-        }
+internal class Text(string id = "") : UIElement(id) {
 
-        Texture2D pixel = new(RenderingObjects.SpriteBatch.GraphicsDevice, 1, 1);
-        pixel.SetData(new Color[] { HexColorHelper.ColorFromHex(color) });
-        Rectangle rect = new(pos.X, pos.Y, (int)width, (int)height);
+    internal string Data         { get; set; } = "Text";
+    internal string FontHexColor { get; set; } = "#FFFFFF";
 
-        RenderingObjects.SpriteBatch.Draw(pixel, rect, Color.White);
+    private readonly DynamicSpriteFont font = RenderingObjects.FontBig;
 
-        if (border != null) DrawBorder(pos, width, height, (Border)border);
+    internal override Rectangle GetBounds() {
+        return new Rectangle(
+           Position.X,
+           Position.Y,
+           (int)font.MeasureString(Data).X,
+           font.LineHeight
+       );
     }
 
-    private static void DrawBorder(Position pos, float width, float height, Border border) {
-        if (border.Size > 0) {
-            RenderingObjects.SpriteBatch.DrawLine( // Top
-                new Vector2(pos.X, pos.Y),
-                new Vector2(pos.X + width, pos.Y),
-                HexColorHelper.ColorFromHex(border.ColorHex),
-                border.Size
-            );
+    internal override void Draw() {
+        RenderingObjects.SpriteBatch.DrawString(
+            RenderingObjects.FontBig,
+            Data,
+            new Vector2(Position.X, Position.Y),
+            HexColorHelper.ColorFromHex(FontHexColor)
+        );
+    }
+}
 
-            RenderingObjects.SpriteBatch.DrawLine( // Left
-                new Vector2(pos.X, pos.Y),
-                new Vector2(pos.X, pos.Y + height),
-                HexColorHelper.ColorFromHex(border.ColorHex),
-                border.Size
-            );
+internal class Button(string id = "") : UIElement(id) {
 
-            RenderingObjects.SpriteBatch.DrawLine( // Right
-                new Vector2(pos.X + width, pos.Y),
-                new Vector2(pos.X + width, pos.Y + height),
-                HexColorHelper.ColorFromHex(border.ColorHex),
-                border.Size
-            );
+    internal Text        TextElement        { get; set; } = new();
+    internal string      BackgroundHexColor { get; set; } = "#000000";
+    internal Border?     Border             { get; set; } = null;
+    internal Padding     Padding            { get; set; } = new Padding(0, 0);
+    internal Action?     OnClick            { get; set; } = null;
 
-            RenderingObjects.SpriteBatch.DrawLine( // Bottom
-                new Vector2(pos.X, pos.Y + height),
-                new Vector2(pos.X + width, pos.Y + height),
-                HexColorHelper.ColorFromHex(border.ColorHex),
-                border.Size
-            );
+    internal override Rectangle GetBounds() {
+
+        Rectangle textBounds = TextElement.GetBounds();
+
+        return new Rectangle(
+            Position.X,
+            Position.Y,
+            textBounds.Width + (Padding.LeftRight * 2),
+            textBounds.Height + (Padding.TopBottom * 2)
+        );
+    }
+
+    internal override void Draw() {
+        Rectangle bounds = GetBounds();
+
+        if (OnClick != null) {
+            UI.HitTestRegistry.Add(Id, new Click(OnClick, bounds));
         }
+
+        DrawHelper.DrawHelperBackground(
+            bounds.Width,
+            bounds.Height,
+            BackgroundHexColor,
+            Position,
+            Border,
+            Padding
+        );
+
+        float textX = Position.X + Padding.LeftRight;
+        float textY = Position.Y + Padding.TopBottom;
+        TextElement.Position = new Position((int)textX, (int)textY);
+        TextElement.Draw();
     }
 }

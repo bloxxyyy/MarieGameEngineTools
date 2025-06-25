@@ -2,6 +2,7 @@
 using DialogConfigurator.App.RenderingHelper;
 using DialogConfigurator.App.Screens.ScreenConfig;
 using DialogConfigurator.App.Ui;
+using DialogConfigurator.App.Ui.DataClasses;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -45,25 +46,6 @@ public class Screen : IScreen
 
     public virtual void Draw()
     {
-        UI.Tag<Button>(button => {
-            button.Position = new Position(400, 400);
-            button.Text     = "This is my New teXt!";
-            button.Border   = new Border("#FF0000", 1);
-            button.Padding  = new Padding(20, 10);
-        });
-
-        UI.Tag<ParentableElement>();
-            UI.Tag<Button>();
-           // UI.Tag<Button>();
-
-            UI.Tag<ParentableElement>();
-           //     UI.Tag<Button>();
-            UI.EndTag();
-
-        UI.EndTag();
-
-        UI.Draw();
-
         RenderingObjects.SpriteBatch.Draw(_WindowTitleColorTex, _WindowBar, Color.Black);
         RenderingObjects.WindowTitleFont.DrawText(RenderingObjects.SpriteBatch, _WindowTitle, _WindowTitlePosition, Color.Wheat);
 

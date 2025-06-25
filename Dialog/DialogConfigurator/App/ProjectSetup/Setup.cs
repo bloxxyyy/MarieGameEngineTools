@@ -27,8 +27,8 @@ public class Setup : Game
         Content.RootDirectory     = "Content";
         IsMouseVisible            = true;
         Window.IsBorderless       = true;
-        RenderingObjects.Graphics.PreferredBackBufferWidth = 1600;
-        RenderingObjects.Graphics.PreferredBackBufferHeight = 960;
+        RenderingObjects.Graphics.PreferredBackBufferWidth = 1240;
+        RenderingObjects.Graphics.PreferredBackBufferHeight = 720;
 
         RenderingObjects.Graphics.ApplyChanges();
         Window.Position = new Point(
