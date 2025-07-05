@@ -1,0 +1,10 @@
+{
+  "EventData": [
+    {
+      "Id": "battle_event"
+    },
+    {
+      "Id": "stop_interaction_event"
+    }
+  ]
+}

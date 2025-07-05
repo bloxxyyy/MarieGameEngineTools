@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarieBaseLibrary", "MarieBaseLibrary\MarieBaseLibrary.csproj", "{4991353E-D481-4EA5-8F78-D352FF5B2BF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{2FB5DDDB-E37D-4A22-84EC-7FEFA3FA354D}"
+	ProjectSection(SolutionItems) = preProject
+		deploy.ps1 = deploy.ps1
+		docker-compose.yml = docker-compose.yml
+		migrate.ps1 = migrate.ps1
+		Structurizr\structurizr.ps1 = Structurizr\structurizr.ps1
+		Structurizr\workspace.dsl = Structurizr\workspace.dsl
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarieBaseTestProject", "MarieBaseTestProject\MarieBaseTestProject.csproj", "{F92AB179-E771-4315-9A13-7F40B8D4FD0D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarieBaseMigrationManager", "MarieBaseMigrationManager\MarieBaseMigrationManager.csproj", "{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4991353E-D481-4EA5-8F78-D352FF5B2BF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4991353E-D481-4EA5-8F78-D352FF5B2BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4991353E-D481-4EA5-8F78-D352FF5B2BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4991353E-D481-4EA5-8F78-D352FF5B2BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F92AB179-E771-4315-9A13-7F40B8D4FD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F92AB179-E771-4315-9A13-7F40B8D4FD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F92AB179-E771-4315-9A13-7F40B8D4FD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F92AB179-E771-4315-9A13-7F40B8D4FD0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7FC96F0-F51A-497F-9D0A-BCFAB72069DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8857BDBB-A7FA-48F2-8D16-FB28041A47A8}
+	EndGlobalSection
+EndGlobal

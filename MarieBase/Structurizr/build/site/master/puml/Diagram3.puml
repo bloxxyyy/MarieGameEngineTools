@@ -1,0 +1,28 @@
+@startuml
+set separator none
+title Dialog Solution - Containers
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+Person(Developer, "Developer", $descr="", $tags="", $link="")
+Person(Engine, "Engine", $descr="", $tags="", $link="")
+System(MarieBaseSolution, "Marie Base Solution", $descr="", $tags="", $link="")
+
+System_Boundary("DialogSolution_boundary", "Dialog Solution", $tags="") {
+  Container(DialogSolution.Dialoglibrary, "Dialog library", $techn="", $descr="", $tags="", $link="")
+  Container(DialogSolution.DialogTestProject, "Dialog Test Project", $techn="", $descr="", $tags="", $link="")
+  Container(DialogSolution.DialogConfigurator, "Dialog Configurator", $techn="", $descr="", $tags="", $link="")
+}
+
+Rel(DialogSolution.DialogTestProject, DialogSolution.Dialoglibrary, "tests", $techn="", $tags="", $link="")
+Rel(DialogSolution.DialogConfigurator, DialogSolution.Dialoglibrary, "sends json to", $techn="", $tags="", $link="")
+Rel(DialogSolution.DialogConfigurator, MarieBaseSolution, "uses", $techn="", $tags="", $link="")
+Rel(Developer, DialogSolution.DialogConfigurator, "uses", $techn="", $tags="", $link="")
+Rel(Engine, DialogSolution.Dialoglibrary, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

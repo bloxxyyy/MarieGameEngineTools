@@ -1,0 +1,31 @@
+{
+  "Initial_prompt_id": "initial_prompt",
+  "npc_prompts": [
+    {
+      "Id": "initial_prompt",
+      "Text": [ "Skibidi" ],
+      "Player_prompt_ids": [
+        "positive_prompt"
+      ]
+    },
+    {
+      "Id": "test1_prompt",
+      "Text": [ "amogus" ]
+    }
+  ],
+  "Player_prompts": [
+    {
+      "Id": "positive_prompt",
+      "Text": [ "Rizz" ],
+      "Target_npc_prompt_chance_ids": [
+        "test1"
+      ]
+    }
+  ],
+  "Npc_prompt_chances": [
+    {
+      "Id": "test1",
+      "Npc_prompt_id": "test1_prompt"
+    }
+  ]
+}
