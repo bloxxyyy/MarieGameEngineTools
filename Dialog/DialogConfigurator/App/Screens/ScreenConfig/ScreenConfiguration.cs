@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YuiConfigurator.App.Screens.ScreenConfig;
+namespace DialogConfigurator.App.Screens.ScreenConfig;
 public static class ScreenConfiguration
 {
     #region Public Api

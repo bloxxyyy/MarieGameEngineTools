@@ -1,4 +1,4 @@
-﻿namespace YuiConfigurator.App.Screens.ScreenConfig;
+﻿namespace DialogConfigurator.App.Screens.ScreenConfig;
 
 public interface IScreen
 {
