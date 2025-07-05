@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace DialogConfigurator.App.Ui;
+namespace DialogConfigurator.App.Ui.Elements.TopLevelElements;
 
 /// <summary>
 /// Dont use, this is just as a base class for the UI.

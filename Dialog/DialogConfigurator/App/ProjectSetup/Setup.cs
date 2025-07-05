@@ -45,7 +45,7 @@ public class Setup : Game
         RenderingObjects.CurrentFontSystem.AddFont(File.ReadAllBytes("../../../Content/Ubuntu-B.ttf"));
         RenderingObjects.CurrentFontSystem.AddFont(File.ReadAllBytes("../../../Content/Ubuntu-M.ttf"));
 
-        RenderingObjects.FontBig         = RenderingObjects.CurrentFontSystem.GetFont(64);
+        RenderingObjects.FontDefault     = RenderingObjects.CurrentFontSystem.GetFont(21);
         RenderingObjects.WindowTitleFont = RenderingObjects.CurrentFontSystem.GetFont(21);
         RenderingObjects.KeyboardInput   = _keyboardInput;
         RenderingObjects.MouseInput      = _mouseInput;
@@ -55,12 +55,12 @@ public class Setup : Game
 
         _GradientBackground = CreateGradientTexture(
             GraphicsDevice,
-            GraphicsDevice.Viewport.Width,
+            GraphicsDevice.Viewport.Width ,
             GraphicsDevice.Viewport.Height,
-            Color.CornflowerBlue,
-            ColorHelper.FromHex("#140a47"),
-            angleDegrees: 45f,
-            midpoint: 0.3f
+            ColorHelper.FromHex("#0b1621"),
+            ColorHelper.FromHex("#0c111f"),
+            angleDegrees: 225f,
+            midpoint: 0.4f
         );
     }
 
@@ -92,8 +92,11 @@ public class Setup : Game
         RenderingObjects.GameTime = gameTime;
         RenderingObjects.Graphics.GraphicsDevice.Clear(ColorHelper.FromHex("#000000"));
 
-        RenderingObjects.SpriteBatch.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
+        RenderingObjects.SpriteBatch.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.LinearClamp);
         RenderingObjects.SpriteBatch.Draw(_GradientBackground, Vector2.Zero, Color.White);
+        RenderingObjects.SpriteBatch.End();
+
+        RenderingObjects.SpriteBatch.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
         ScreenConfiguration.Draw();
         RenderingObjects.SpriteBatch.End();
     }

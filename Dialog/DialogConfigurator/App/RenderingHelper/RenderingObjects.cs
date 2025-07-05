@@ -13,7 +13,7 @@ public static class RenderingObjects
     public static GameTime              GameTime          { get; internal set; }
     public static FontSystem            CurrentFontSystem { get; internal set; }
     public static DynamicSpriteFont     WindowTitleFont   { get; internal set; }
-    public static DynamicSpriteFont     FontBig           { get; internal set; }
+    public static DynamicSpriteFont     FontDefault           { get; internal set; }
     public static int                   ScreenWidth       { get; internal set; }
     public static int                   ScreenHeight      { get; internal set; }
     public static KeyboardInput         KeyboardInput     { get; internal set; }
